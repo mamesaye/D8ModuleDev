@@ -10,14 +10,19 @@ use Drupal\Core\Form\FormStateInterface;
 * Alter the node add/edit form to include admin setting for displaying RSVPBlock with content
 */
 function rsvplist_form_node_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    #print_r($form_id);
+    #print_r("\n");
   $node = $form_state->getFormObject()->getEntity();
   $current_node_type = $node->getType();
   $config = \Drupal::config('rsvplist.settings');
   $types = $config->get('allowed_types', array());
+#print_r($current_node_type);
+  #print_r($types);
+  #if ($form_id == 'node_edit_form') {
 // RSVP Options for administrators
   if (in_array($current_node_type, $types)){
     $form['rsvplist'] = array(
-      '#type' => 'details',
+      '#type' => 'fieldset',
       '#title' => t('RSVP Collection'),
       '#access' => \Drupal::currentUser()->hasPermission('administer rsvplist'),
       '#group' => 'advanced',
@@ -37,6 +42,7 @@ function rsvplist_form_node_form_alter(&$form, \Drupal\Core\Form\FormStateInterf
     }
   }
 }
+#}
 /**
  * Form submission handler for RSVP item field on the node form.
  *
